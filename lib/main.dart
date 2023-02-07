@@ -1,7 +1,24 @@
+//import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+import 'package:firebase_auth_web/firebase_auth_web.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  FirebaseApp fbApp = await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform);
+  FirebaseAuthWeb fbAuth = await FirebaseAuthWeb.instance;
+  try {
+    print(fbAuth.currentUser.uid);
+  } catch (e) {
+    print(e);
+  }
+  await fbAuth.signInWithEmailAndPassword(
+      'nicholas.fprestes@gmail.com', '123456789');
+  print(fbAuth.currentUser.uid);
+  fbAuth.signOut();
   runApp(MyApp());
 }
 
@@ -27,7 +44,7 @@ class MyApp extends StatelessWidget {
         // closer together (more dense) than on mobile platforms.
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page1234'),
+      home: MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
